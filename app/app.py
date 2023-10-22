@@ -4,7 +4,9 @@ from app.db import User, create_db_and_tables
 from app.schemas import UserCreate, UserRead, UserUpdate
 from app.users import auth_backend, current_active_user, fastapi_users
 
-app = FastAPI()
+from app import items
+
+app = FastAPI(title='Shopping List API', version='V1.0.1')
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
@@ -29,6 +31,8 @@ app.include_router(
     prefix="/users",
     tags=["users"],
 )
+
+app.include_router(items.router)
 
 
 @app.get("/authenticated-route")
